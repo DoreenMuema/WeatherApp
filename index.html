@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>WeatherApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter City Name"
+            spellcheck="false">
+            <button><img src= "images/search.png"></button>
+            <div class="error">
+                <p>Invalid City name</p>
+            </div>
+        </div>
+        <div class="Weather">
+            <img src="images/rain.png" class="weather-icon">
+            <h1 class="temp">22°</h1>
+            <h2 class="City">New York</h1>
+            <div class="details">
+                <div class="col">
+                    <img src="images/humidity.png">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>humidity</p>
+                    </div>
+                    <div class="col">
+                        <img src="images/wind.png">
+                        <div>
+                            <p class="wind" >15km/h</p>
+                            <p>Wind Speed</p>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        const apiKey="d0498b9371b2d36a8b62715aba2570cb";
+        const apiUrl="https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
+
+        const searchBox= document.querySelector(".search input");
+        const searchBtn= document.querySelector(".search button");
+        const weatherIcon = document.querySelector('.weather-icon');
+
+
+
+        async function checkWeather(city){
+           
+            const response = await fetch(apiUrl + city +`&appid=${apiKey}`) //fetching the weather data
+            
+            var data = await response.json();
+
+            //updating the data for each from the API data
+            document.querySelector(".City").innerHTML=data.name;
+            document.querySelector(".temp").innerHTML=  Math.round(data.main.temp) + "°c";
+            document.querySelector(".humidity").innerHTML=data.main.humidity + "%;";
+            document.querySelector(".wind").innerHTML=data.wind.speed  + "km/h";
+            document.querySelector(".Weather").style.display = "Block";
+
+
+            weatherIcon.src= `images/${(data.weather[0].main)}.png`;//changing  icon according to the weather condition
+            
+            
+
+
+           
+                
+        }
+        searchBtn.addEventListener("click", ()=>{
+            checkWeather(searchBox.value);
+
+
+        });
+             
+  
+
+
+    
+    </script>
+
+    
+</body>
+</html>
